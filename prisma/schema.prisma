@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  services Service[]
+}
+
+model Vendor {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  website   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  services Service[]
+  prices   Price[]
+}
+
+model Service {
+  id         String   @id @default(cuid())
+  name       String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  prices Price[]
+
+  @@unique([name, categoryId])
+}
+
+model Price {
+  id            String   @id @default(cuid())
+  service       Service  @relation(fields: [serviceId], references: [id])
+  serviceId     String
+  vendor        Vendor   @relation(fields: [vendorId], references: [id])
+  vendorId      String
+  price         Float
+  priceType     String   @default("FIXED")
+  confidence    Float    @default(0.5)
+  lastUpdated   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([serviceId, vendorId])
+}
