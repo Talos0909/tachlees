@@ -1,0 +1,4 @@
+'use client';
+export default function Home() {
+  return <div style={{textAlign:'center',padding:'100px 20px',minHeight:'100vh',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}><h1 style={{fontSize:'48px',color:'#1e3a8a'}}>תאכלס</h1><p style={{fontSize:'24px',color:'#3b82f6'}}>הכי זול בארץ 🇮🇱</p></div>;
+}
