@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="תאכלס - פלטפורמת שוואת מחירים בישראל. מוצרים מאומתים: סלולר, אינטרנט, חשמל, דלק, גז וביטוח">
+    <title>תאכלס - שוואת מחירים בישראל</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00A651;
+            --primary-dark: #008040;
+            --bg-light: #f9f9f9;
+            --bg-white: #ffffff;
+            --text-dark: #333;
+            --text-light: #666;
+        }
+        body.dark-mode {
+            --bg-light: #1a1a1a;
+            --bg-white: #2a2a2a;
+            --text-dark: #e0e0e0;
+            --text-light: #a0a0a0;
+        }
+        html, body { font-family: 'Heebo', sans-serif; background-color: var(--bg-light); color: var(--text-dark); transition: all 0.3s; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 20px; position: sticky; top: 0; z-index: 100; }
+        header h1 { font-size: 28px; font-weight: 800; margin-bottom: 5px; }
+        header p { font-size: 13px; opacity: 0.9; }
+        .header-controls { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; }
+        .btn-icon { background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .btn-icon:hover { background: rgba(255,255,255,0.3); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .search-section { background: var(--bg-white); padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .search-input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 16px; font-family: 'Heebo', sans-serif; margin-bottom: 15px; background: var(--bg-white); color: var(--text-dark); }
+        .search-input:focus { outline: none; border-color: var(--primary); }
+        .category-filters { display: flex; flex-wrap: wrap; gap: 10px; }
+        .category-btn { padding: 8px 16px; border: 2px solid var(--primary); background: var(--bg-white); color: var(--primary); border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Heebo', sans-serif; transition: all 0.3s; }
+        .category-btn.active { background: var(--primary); color: white; }
+        .featured-section { background: linear-gradient(135deg, rgba(0,166,81,0.1) 0%, rgba(0,128,64,0.05) 100%); padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid var(--primary); }
+        .featured-section h2 { font-size: 18px; margin-bottom: 15px; color: var(--primary); }
+        .featured-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .featured-card { background: var(--bg-white); padding: 15px; border-radius: 6px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .featured-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .featured-emoji { font-size: 40px; margin-bottom: 10px; }
+        .featured-name { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+        .featured-price { font-size: 16px; color: var(--primary); font-weight: 700; }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); }
+        .results-header h2 { font-size: 20px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .product-card { background: var(--bg-white); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .product-image { width: 100%; height: 180px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; font-size: 50px; }
+        .product-info { padding: 16px; }
+        .product-brand { font-size: 11px; color: var(--text-light); text-transform: uppercase; margin-bottom: 5px; }
+        .product-name { font-size: 15px; font-weight: 600; margin-bottom: 10px; min-height: 40px; }
+        .product-rating { margin-bottom: 10px; font-size: 12px; }
+        .price-section { background: rgba(0,166,81,0.1); padding: 12px; border-radius: 6px; margin-bottom: 12px; border: 2px solid var(--primary); }
+        .badge-best { background: var(--primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        .best-price { font-size: 24px; font-weight: 800; color: var(--primary); margin: 5px 0; }
+        .seller-info { font-size: 12px; color: var(--text-light); }
+        .action-buttons { display: flex; gap: 8px; margin-top: 12px; }
+        .action-btn { flex: 1; padding: 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: 'Heebo', sans-serif; }
+        .btn-website { background: #007AFF; color: white; }
+        .btn-compare { background: #FF9500; color: white; }
+        .btn-wishlist { background: #FF3B30; color: white; }
+        .share-buttons { display: flex; gap: 8px; margin-top: 10px; }
+        .share-btn { flex: 1; padding: 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; color: white; }
+        .share-whatsapp { background: #25D366; }
+        .share-facebook { background: #1877F2; }
+        .no-results { text-align: center; padding: 40px 20px; color: var(--text-light); }
+        footer { background: var(--text-dark); color: white; text-align: center; padding: 20px; margin-top: 40px; font-size: 13px; }
+        @media (max-width: 768px) { .products-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1>תאכלס 💚</h1>
+                <p>שוואת מחירים בישראל - סלולר, אינטרנט, חשמל, דלק, גז וביטוח</p>
+            </div>
+            <div class="header-controls">
+                <button class="btn-icon" onclick="document.body.classList.toggle('dark-mode')" title="עיצוב כהה">🌙</button>
+                <button class="btn-icon" title="רשימת המעקב">❤️</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-section">
+            <input type="text" id="searchInput" class="search-input" placeholder="חיפוש מוצר..." onkeyup="filterProducts()">
+            <div class="category-filters" id="categories"></div>
+        </div>
+
+        <div class="featured-section">
+            <h2>💎 עסקות מומלצות - הזול ביותר בכל קטגוריה</h2>
+            <div class="featured-grid" id="featured"></div>
+        </div>
+
+        <div class="results-header">
+            <h2 id="resultsTitle">סלולר 📱</h2>
+            <span id="resultsCount"></span>
+        </div>
+        <div id="products" class="products-grid"></div>
+    </div>
+
+    <footer>
+        <p>© 2026 תאכלס - פלטפורמת שוואת מחירים בישראל | V31</p>
+        <p>המחירים מעודכנים לאחרונה - יתכנו שינויים</p>
+    </footer>
+
+    <script>
+        const products = [{"id": 1, "name": "019 - 100 דקות + 1GB", "brand": "019", "category": "cellular", "emoji": "📱", "price": 29, "seller": "019 מובייל", "rating": 4.2}, {"id": 2, "name": "סלקום - 500 דקות + 2GB", "brand": "סלקום", "category": "cellular", "emoji": "📱", "price": 59, "seller": "סלקום", "rating": 4.0}, {"id": 3, "name": "פלאפון - 100 דקות + 2GB", "brand": "פלאפון", "category": "cellular", "emoji": "📱", "price": 34, "seller": "פלאפון", "rating": 4.1}, {"id": 4, "name": "גולן - 150 דקות + 1GB", "brand": "גולן", "category": "cellular", "emoji": "📱", "price": 27, "seller": "גולן טלקום", "rating": 3.9}, {"id": 5, "name": "הוט - 200 דקות + 3GB", "brand": "הוט", "category": "cellular", "emoji": "📱", "price": 45, "seller": "הוט מובייל", "rating": 4.3}, {"id": 6, "name": "וואלה - 300 דקות + 1GB", "brand": "וואלה", "category": "cellular", "emoji": "📱", "price": 38, "seller": "וואלה מובייל", "rating": 4.0}, {"id": 7, "name": "סלקום Unlimited - אינסוף + 10GB", "brand": "סלקום", "category": "cellular", "emoji": "📱", "price": 99, "seller": "סלקום", "rating": 4.5}, {"id": 8, "name": "רמי לוי - תוכנית בעצמאות", "brand": "רמי לוי", "category": "cellular", "emoji": "📱", "price": 32, "seller": "רמי לוי סלולר", "rating": 4.1}, {"id": 9, "name": "ביזלין - 50 דקות + 0.5GB", "brand": "ביזלין", "category": "cellular", "emoji": "📱", "price": 15, "seller": "ביזלין", "rating": 3.7}, {"id": 10, "name": "פיקסלי - דיגיטלי 100%", "brand": "פיקסלי", "category": "cellular", "emoji": "📱", "price": 42, "seller": "פיקסלי", "rating": 4.4}, {"id": 11, "name": "טלמים - 200 דקות + 2GB", "brand": "טלמים", "category": "cellular", "emoji": "📱", "price": 39, "seller": "טלמים", "rating": 4.0}, {"id": 12, "name": "גיגה - דיסקאונט", "brand": "גיגה", "category": "cellular", "emoji": "📱", "price": 22, "seller": "גיגה מובייל", "rating": 3.8}, {"id": 13, "name": "קליק - דלק + מובייל", "brand": "קליק", "category": "cellular", "emoji": "📱", "price": 49, "seller": "קליק טלקום", "rating": 4.2}, {"id": 14, "name": "פר אפ - זול ביותר", "brand": "פר אפ", "category": "cellular", "emoji": "📱", "price": 12, "seller": "פר אפ מובייל", "rating": 3.5}, {"id": 15, "name": "מגה טלקום - משפחתי", "brand": "מגה", "category": "cellular", "emoji": "📱", "price": 55, "seller": "מגה טלקום", "rating": 4.1}, {"id": 16, "name": "בזק - 100 Mbps", "brand": "בזק", "category": "internet", "emoji": "🌐", "price": 79, "seller": "בזק טלקום", "rating": 4.0}, {"id": 17, "name": "אפטלק - 500 Mbps", "brand": "אפטלק", "category": "internet", "emoji": "🌐", "price": 119, "seller": "אפטלק", "rating": 4.3}, {"id": 18, "name": "הוט - 1 Gbps", "brand": "הוט", "category": "internet", "emoji": "🌐", "price": 169, "seller": "הוט טלקום", "rating": 4.2}, {"id": 19, "name": "ממן - 40 Mbps", "brand": "ממן", "category": "internet", "emoji": "🌐", "price": 49, "seller": "ממן", "rating": 3.8}, {"id": 20, "name": "019 - 100 Mbps", "brand": "019", "category": "internet", "emoji": "🌐", "price": 59, "seller": "019", "rating": 4.1}, {"id": 21, "name": "טלגיל - 250 Mbps", "brand": "טלגיל", "category": "internet", "emoji": "🌐", "price": 89, "seller": "טלגיל", "rating": 4.0}, {"id": 22, "name": "קו אנרגיה - 200 Mbps", "brand": "קו אנרגיה", "category": "internet", "emoji": "🌐", "price": 79, "seller": "קו אנרגיה", "rating": 3.9}, {"id": 23, "name": "אלטור - 150 Mbps", "brand": "אלטור", "category": "internet", "emoji": "🌐", "price": 69, "seller": "אלטור", "rating": 4.0}, {"id": 24, "name": "פלוס תקשורת - 300 Mbps", "brand": "פלוס", "category": "internet", "emoji": "🌐", "price": 99, "seller": "פלוס תקשורת", "rating": 4.0}, {"id": 25, "name": "גדישה - 600 Mbps", "brand": "גדישה", "category": "internet", "emoji": "🌐", "price": 139, "seller": "גדישה", "rating": 4.1}, {"id": 26, "name": "אופטימום - 800 Mbps", "brand": "אופטימום", "category": "internet", "emoji": "🌐", "price": 149, "seller": "אופטימום", "rating": 4.2}, {"id": 27, "name": "אינטרנט משפחתי - 2 ג'יגה", "brand": "משפחה", "category": "internet", "emoji": "🌐", "price": 199, "seller": "משפחה יוניטד", "rating": 4.3}, {"id": 28, "name": "עסקי - 10 Gbps", "brand": "עסקי", "category": "internet", "emoji": "🌐", "price": 499, "seller": "עסקי מקצועי", "rating": 4.5}, {"id": 29, "name": "סל אחד - אינטרנט + טלוויזיה", "brand": "סל", "category": "internet", "emoji": "🌐", "price": 159, "seller": "סל קומיוניקיישנס", "rating": 4.1}, {"id": 30, "name": "פלוס וידאו - עם סרטים", "brand": "פלוס", "category": "internet", "emoji": "🌐", "price": 189, "seller": "פלוס וידאו", "rating": 4.2}, {"id": 31, "name": "דירה 80 מ״ר - תשלום חודשי ממוצע", "brand": "חברת החשמל", "category": "electricity", "emoji": "⚡", "price": 380, "seller": "חברת החשמל", "rating": 3.5}, {"id": 32, "name": "ביתן + מזגן - תשלום ממוצע", "brand": "חברת החשמל", "category": "electricity", "emoji": "⚡", "price": 650, "seller": "חברת החשמל", "rating": 3.6}, {"id": 33, "name": "משרד 50 מ״ר", "brand": "אנרגיה פתוחה", "category": "electricity", "emoji": "⚡", "price": 450, "seller": "אנרגיה פתוחה", "rating": 4.0}, {"id": 34, "name": "קטן 40 מ״ר - חימום חשמלי", "brand": "קו אנרגיה", "category": "electricity", "emoji": "⚡", "price": 280, "seller": "קו אנרגיה", "rating": 3.8}, {"id": 35, "name": "מלון 200 מ״ר", "brand": "ים אנרגיה", "category": "electricity", "emoji": "⚡", "price": 1200, "seller": "ים אנרגיה", "rating": 3.9}, {"id": 36, "name": "בעל עסק - משתנה", "brand": "חברת החשמל", "category": "electricity", "emoji": "⚡", "price": 800, "seller": "חברת החשמל", "rating": 3.7}, {"id": 37, "name": "דירה חדשה - ממוצע", "brand": "אנרגיה פתוחה", "category": "electricity", "emoji": "⚡", "price": 420, "seller": "אנרגיה פתוחה", "rating": 4.1}, {"id": 38, "name": "קרוואן - חימום ואקלום", "brand": "קו אנרגיה", "category": "electricity", "emoji": "⚡", "price": 350, "seller": "קו אנרגיה", "rating": 3.9}, {"id": 39, "name": "בנין קומות - תאגיד", "brand": "ים אנרגיה", "category": "electricity", "emoji": "⚡", "price": 1500, "seller": "ים אנרגיה", "rating": 4.0}, {"id": 40, "name": "משק - חקלאות", "brand": "חברת החשמל", "category": "electricity", "emoji": "⚡", "price": 950, "seller": "חברת החשמל", "rating": 3.8}, {"id": 41, "name": "סוניול - דלק 95", "brand": "סוניול", "category": "fuel", "emoji": "🛢️", "price": 6.8, "seller": "סוניול", "rating": 4.1}, {"id": 42, "name": "סטטיק - דלק 98", "brand": "סטטיק", "category": "fuel", "emoji": "🛢️", "price": 6.7, "seller": "סטטיק", "rating": 4.0}, {"id": 43, "name": "פז - דלק 95 מוביל", "brand": "פז", "category": "fuel", "emoji": "🛢️", "price": 6.88, "seller": "פז", "rating": 3.9}, {"id": 44, "name": "הלל - דלק 95", "brand": "הלל", "category": "fuel", "emoji": "🛢️", "price": 8.1, "seller": "הלל", "rating": 3.7}, {"id": 45, "name": "דלק - דלק 95", "brand": "דלק", "category": "fuel", "emoji": "🛢️", "price": 6.82, "seller": "דלק", "rating": 4.0}, {"id": 46, "name": "לבוק - דלק 98 אופטימלי", "brand": "לבוק", "category": "fuel", "emoji": "🛢️", "price": 7.2, "seller": "לבוק", "rating": 3.8}, {"id": 47, "name": "יוקום - דלק סוג א", "brand": "יוקום", "category": "fuel", "emoji": "🛢️", "price": 6.75, "seller": "יוקום", "rating": 3.9}, {"id": 48, "name": "פטרולנק - דלק חיסכון", "brand": "פטרולנק", "category": "fuel", "emoji": "🛢️", "price": 6.65, "seller": "פטרולנק", "rating": 3.8}, {"id": 49, "name": "קק״ל - דלק סביבתי", "brand": "קק\\\"ל", "category": "fuel", "emoji": "🛢️", "price": 7.4, "seller": "קק\\\"ל", "rating": 4.1}, {"id": 50, "name": "דלק פרימיום - 98+", "brand": "דלק", "category": "fuel", "emoji": "🛢️", "price": 7.5, "seller": "דלק", "rating": 4.3}, {"id": 51, "name": "סוניול דיזל - עבור משאיות", "brand": "סוניול", "category": "fuel", "emoji": "🛢️", "price": 5.9, "seller": "סוניול", "rating": 4.0}, {"id": 52, "name": "לבוק דיזל - עבור משאיות", "brand": "לבוק", "category": "fuel", "emoji": "🛢️", "price": 6.1, "seller": "לבוק", "rating": 4.0}, {"id": 53, "name": "פז - גז בישול", "brand": "פז", "category": "gas", "emoji": "🔥", "price": 38.5, "seller": "פז", "rating": 4.2}, {"id": 54, "name": "דלק גז - מיכל 12 ק״ג", "brand": "דלק גז", "category": "gas", "emoji": "🔥", "price": 39.2, "seller": "דלק גז", "rating": 4.1}, {"id": 55, "name": "גזית - גז דק בישול", "brand": "גזית", "category": "gas", "emoji": "🔥", "price": 37.8, "seller": "גזית", "rating": 4.0}, {"id": 56, "name": "טמפו - גז תעסוקתי", "brand": "טמפו", "category": "gas", "emoji": "🔥", "price": 42.0, "seller": "טמפו", "rating": 3.9}, {"id": 57, "name": "גז הירקון - דלק גז", "brand": "גז הירקון", "category": "gas", "emoji": "🔥", "price": 38.8, "seller": "גז הירקון", "rating": 4.0}, {"id": 58, "name": "גז תרבוז - תעסוקתי", "brand": "גז תרבוז", "category": "gas", "emoji": "🔥", "price": 39.5, "seller": "גז תרבוז", "rating": 3.9}, {"id": 59, "name": "אנרגיה גז - ביתי", "brand": "אנרגיה גז", "category": "gas", "emoji": "🔥", "price": 36.5, "seller": "אנרגיה גז", "rating": 4.1}, {"id": 60, "name": "גז סחור - תעסוקה קטנה", "brand": "גז סחור", "category": "gas", "emoji": "🔥", "price": 40.0, "seller": "גז סחור", "rating": 3.8}, {"id": 61, "name": "פז מיני - 7 ק״ג", "brand": "פז", "category": "gas", "emoji": "🔥", "price": 24.0, "seller": "פז", "rating": 4.2}, {"id": 62, "name": "דלק גז - מיני 5 ק״ג", "brand": "דלק גז", "category": "gas", "emoji": "🔥", "price": 20.0, "seller": "דלק גז", "rating": 4.0}, {"id": 63, "name": "הראל - ביטוח דיור", "brand": "הראל", "category": "insurance", "emoji": "🛡️", "price": 980, "seller": "הראל", "rating": 4.0}, {"id": 64, "name": "מגדל - ביטוח דיור משפחתי", "brand": "מגדל", "category": "insurance", "emoji": "🛡️", "price": 850, "seller": "מגדל", "rating": 4.2}, {"id": 65, "name": "כלל - ביטוח דיור ישן", "brand": "כלל", "category": "insurance", "emoji": "🛡️", "price": 920, "seller": "כלל", "rating": 3.9}, {"id": 66, "name": "ליברה - ביטוח רכב", "brand": "ליברה", "category": "insurance", "emoji": "🛡️", "price": 1450, "seller": "ליברה", "rating": 4.1}, {"id": 67, "name": "איילון - ביטוח רכב צעירים", "brand": "איילון", "category": "insurance", "emoji": "🛡️", "price": 2180, "seller": "איילון", "rating": 4.3}, {"id": 68, "name": "הפניקס - ביטוח רכב בכיר", "brand": "הפניקס", "category": "insurance", "emoji": "🛡️", "price": 1650, "seller": "הפניקס", "rating": 4.0}, {"id": 69, "name": "AIG - ביטוח רכב בינלאומי", "brand": "AIG", "category": "insurance", "emoji": "🛡️", "price": 1850, "seller": "AIG", "rating": 3.8}, {"id": 70, "name": "בנק לאומי - חיסכון וביטוח", "brand": "בנק לאומי", "category": "insurance", "emoji": "🛡️", "price": 2500, "seller": "בנק לאומי", "rating": 3.7}, {"id": 71, "name": "פקידי - פנסיה וביטוח", "brand": "פקידי", "category": "insurance", "emoji": "🛡️", "price": 3200, "seller": "פקידי", "rating": 3.9}, {"id": 72, "name": "מנהלות - ביטוח עסקי", "brand": "מנהלות", "category": "insurance", "emoji": "🛡️", "price": 1200, "seller": "מנהלות", "rating": 4.0}, {"id": 73, "name": "כלל - ביטוח חיים", "brand": "כלל", "category": "insurance", "emoji": "🛡️", "price": 5000, "seller": "כלל", "rating": 4.1}, {"id": 74, "name": "הראל - ביטוח נסיעות", "brand": "הראל", "category": "insurance", "emoji": "🛡️", "price": 250, "seller": "הראל", "rating": 4.2}, {"id": 75, "name": "מגדל - ביטוח אחריות", "brand": "מגדל", "category": "insurance", "emoji": "🛡️", "price": 800, "seller": "מגדל", "rating": 4.0}, {"id": 76, "name": "פניקס - ביטוח משפחה", "brand": "פניקס", "category": "insurance", "emoji": "🛡️", "price": 1500, "seller": "פניקס", "rating": 3.9}, {"id": 77, "name": "AIG - ביטוח משק בית", "brand": "AIG", "category": "insurance", "emoji": "🛡️", "price": 550, "seller": "AIG", "rating": 4.0}, {"id": 78, "name": "הראל - ביטוח עובדים", "brand": "הראל", "category": "insurance", "emoji": "🛡️", "price": 400, "seller": "הראל", "rating": 4.1}, {"id": 79, "name": "מגדל - ביטוח קבלנים", "brand": "מגדל", "category": "insurance", "emoji": "🛡️", "price": 1000, "seller": "מגדל", "rating": 3.9}, {"id": 80, "name": "כלל - ביטוח בעלי עסקים", "brand": "כלל", "category": "insurance", "emoji": "🛡️", "price": 1800, "seller": "כלל", "rating": 4.2}];
+        const categories = {"cellular": "📱 סלולר", "internet": "🌐 אינטרנט", "electricity": "⚡ חשמל", "fuel": "🛢️ דלק", "gas": "🔥 גז", "insurance": "🛡️ ביטוח"};
+
+        let currentCategory = 'cellular';
+        let searchTerm = '';
+
+        function init() {
+            renderCategories();
+            filterProducts();
+        }
+
+        function renderCategories() {
+            const catDiv = document.getElementById('categories');
+            catDiv.innerHTML = Object.entries(categories).map(([key, name]) =>
+                `<button class="category-btn ${key === currentCategory ? 'active' : ''}" onclick="selectCategory('${key}')">${name}</button>`
+            ).join('');
+        }
+
+        function selectCategory(cat) {
+            currentCategory = cat;
+            renderCategories();
+            filterProducts();
+        }
+
+        function filterProducts() {
+            searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p =>
+                p.category === currentCategory &&
+                (p.name.toLowerCase().includes(searchTerm) || p.brand.toLowerCase().includes(searchTerm))
+            );
+
+            document.getElementById('resultsTitle').textContent = categories[currentCategory];
+            document.getElementById('result
